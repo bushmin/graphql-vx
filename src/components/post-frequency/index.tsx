@@ -3,6 +3,7 @@ import { Bar } from '@visx/shape';
 import { Group } from '@visx/group';
 import { GradientPurpleRed } from '@visx/gradient';
 import { AxisBottom, AxisLeft } from '@visx/axis';
+import { Grid } from '@visx/grid';
 import { scaleBand, scaleLinear } from '@visx/scale';
 
 import type {Post} from '../../types';
@@ -53,6 +54,17 @@ export const PostFrequency = ({ width = 700, height = 500, posts }: Props) => {
     <svg width={width} height={height}>
       <GradientPurpleRed id="teal" />
       <rect width={width} height={height} fill="url(#teal)" rx={14} />
+      <Grid
+          top={margin.y/2}
+          left={margin.x/2}
+          xScale={xScale}
+          yScale={yScale}
+          width={xMax}
+          height={yMax}
+          stroke="black"
+          strokeOpacity={0.3}
+          xOffset={xScale.bandwidth() / 2}
+        />
       <Group left={margin.x / 2} top={margin.y / 2}>
         {posts.map((d: Post[], index: number) => {
           const month = index;

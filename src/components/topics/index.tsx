@@ -2,7 +2,6 @@ import React, {useMemo} from 'react';
 import { BarStack } from '@visx/shape';
 import { SeriesPoint } from '@visx/shape/lib/types';
 import { Group } from '@visx/group';
-import { Grid } from '@visx/grid';
 import { AxisBottom } from '@visx/axis';
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale';
 import { useTooltip, useTooltipInPortal, defaultStyles } from '@visx/tooltip';
@@ -104,17 +103,6 @@ export const TopTopics = ({ width = 1000, height = 500, topics, monthPosts }: Pr
   return width < 10 ? null : (
     <div style={{ position: 'relative' }}>
       <svg ref={containerRef} width={width} height={height}>
-        <Grid
-          top={margin.y/2}
-          left={margin.x/2}
-          xScale={xScale}
-          yScale={yScale}
-          width={xMax}
-          height={yMax}
-          stroke="black"
-          strokeOpacity={0.1}
-          xOffset={xScale.bandwidth() / 2}
-        />
         <Group top={margin.x/2} left={margin.x/2}>
           <BarStack
             data={monthPosts}

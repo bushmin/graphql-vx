@@ -22,15 +22,15 @@ export type AuthorCollection = Record<string, {
     author: Author
   }>
 
-export type MonthCollection = {
-    month: number,
+export type Month = {
+    monthId: number,
     posts: Post[];
     topics: Record<string, Post[]>;
-  }[];
+  };
 
 
 export type SortedData = {
-    months: MonthCollection
+    months: Month[],
     authors: AuthorCollection,
     topics: Record<string, Post[]>
   };

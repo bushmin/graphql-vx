@@ -23,7 +23,7 @@ const megaSort = (posts: Post[], minLikelihood = 0.2) => {
 
     let monthPosts = sorted.months[month]?.posts;
     monthPosts ? monthPosts.push(post) : monthPosts = [post];
-    sorted.months[month] || (sorted.months[month] = {month, posts: [], topics: {}});
+    sorted.months[month] || (sorted.months[month] = {monthId: month, posts: [], topics: {}});
 
     for (const topic of post.likelyTopics) {
       if (topic.likelihood > minLikelihood) {
@@ -53,7 +53,7 @@ const megaSort = (posts: Post[], minLikelihood = 0.2) => {
 
 
 function App() {
-  const { loading, error, data } = useQuery(GET_POSTS, {variables: { amount: 100 }});
+  const { loading, error, data } = useQuery(GET_POSTS, {variables: { amount: 1000 }});
 
   const sortedData = useMemo(() => megaSort(data?.allPosts), [data])
 
@@ -71,7 +71,7 @@ function App() {
       
       <br /><br />
 
-      <p>Most popular topics by month</p>
+      <p>Most popular topics by month (likelihood &gt; 0.2)</p>
       <TopTopics
       topics={sortedData.topics}
       monthPosts={sortedData.months}

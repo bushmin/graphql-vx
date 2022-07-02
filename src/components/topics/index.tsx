@@ -9,8 +9,8 @@ import { useTooltip, useTooltipInPortal, defaultStyles } from '@visx/tooltip';
 import { LegendOrdinal } from '@visx/legend';
 import { localPoint } from '@visx/event';
 
-import type {Post, MonthCollection} from '../../types';
-import {margin, monthNames, labelProps} from '../graphConstants'
+import type {Post, Month} from '../../types';
+import {margin, monthNames, labelProps, colorArray} from '../graphConstants'
 
 
 type TooltipData = {
@@ -25,10 +25,7 @@ type TooltipData = {
 };
 
 
-const purple1 = '#6c5efb';
-const purple2 = '#c998ff';
-export const purple3 = '#a44afe';
-export const background = '#eaedff';
+
 const tooltipStyles = {
   ...defaultStyles,
   minWidth: 60,
@@ -39,11 +36,16 @@ const tooltipStyles = {
 
 
 // accessors
-const getMonth = (month: any) => month.month;
+const getMonthId = (month: Month) => month.monthId;
 
-const topicPart = (month: any, topicName: string) => {
+const totalMonthCount = (month: Month) => {
+    return Object.values(month.topics).reduce((acc: number, topic: any) => acc + topic.length, 0)
+}
+
+const topicPart = (month: Month, topicName: string) => {
     if (!month.topics[topicName]) return 0;
-    return Math.floor(100 * month.topics[topicName].length / month.posts.length);
+    
+    return (month.topics[topicName].length / totalMonthCount(month));
 }
 
 
@@ -51,12 +53,12 @@ let tooltipTimeout: number;
 
 export type Props = {
     topics: Record<string, Post[]>;
-    monthPosts: MonthCollection;
+    monthPosts: Month[];
     width?: number;
     height?: number
   };
 
-export const TopTopics = ({ width = 700, height = 500, topics, monthPosts }: Props) => {
+export const TopTopics = ({ width = 1000, height = 500, topics, monthPosts }: Props) => {
   const { tooltipOpen, tooltipLeft, tooltipTop, tooltipData, hideTooltip, showTooltip } =
     useTooltip<TooltipData>();
 
@@ -82,7 +84,7 @@ export const TopTopics = ({ width = 700, height = 500, topics, monthPosts }: Pro
       scaleLinear<number>({
         range: [yMax, 0],
         round: true,
-        domain: [0, 100],
+        domain: [0, 1],
         nice: true,
       }),
     [yMax],
@@ -90,7 +92,7 @@ export const TopTopics = ({ width = 700, height = 500, topics, monthPosts }: Pro
 
   const colorScale = scaleOrdinal({
     domain: Object.keys(topics),
-    range: [purple1, purple2, purple3],
+    range: colorArray,
   });
 
   const dateScale = scaleBand<string>({
@@ -102,7 +104,6 @@ export const TopTopics = ({ width = 700, height = 500, topics, monthPosts }: Pro
   return width < 10 ? null : (
     <div style={{ position: 'relative' }}>
       <svg ref={containerRef} width={width} height={height}>
-        <rect x={0} y={0} width={width} height={height} fill={background} rx={14} />
         <Grid
           top={margin.y/2}
           left={margin.x/2}
@@ -118,16 +119,16 @@ export const TopTopics = ({ width = 700, height = 500, topics, monthPosts }: Pro
           <BarStack
             data={monthPosts}
             keys={Object.keys(topics)}
-            x={getMonth}
+            x={getMonthId}
             xScale={xScale}
             yScale={yScale}
             color={colorScale}
             value={topicPart}
+            order='descending'
           >
             {(barStacks) =>
               barStacks.map((barStack) =>
                 barStack.bars.map((bar) => { 
-                    //console.log({barStack, bar});
                     return(
                   <rect
                     key={`bar-stack-${barStack.index}-${bar.index}`}
@@ -186,7 +187,10 @@ export const TopTopics = ({ width = 700, height = 500, topics, monthPosts }: Pro
           <div style={{ color: colorScale(tooltipData.key) }}>
             <strong>{tooltipData.key}</strong>
           </div>
-          <div>posts: {tooltipData.bar.data[tooltipData.key]}</div>
+          <div>posts: {tooltipData.bar.data.topics[tooltipData.key].length}
+          {' '}
+             ({Math.round(100*topicPart(tooltipData.bar.data,tooltipData.key))}%)          
+          </div>
           <div>
           </div>
         </TooltipInPortal>

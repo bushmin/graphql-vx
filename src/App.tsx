@@ -1,29 +1,13 @@
 import React from 'react';
 import './App.css';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
+import {GET_POSTS} from './graphql/queries';
 import {PostFrequency} from './components/postFrequency';
+import type {Post} from './types';
 
-const GET_POSTS = gql`
-  query Posts($amount: Int) {
-    allPosts(count: $amount) {
-      id
-      title
-      createdAt
-      author {
-        id
-        firstName
-        lastName
-      }
-      likelyTopics {
-        label
-        likelihood
-      }
-    }
-  }
-`;
 
-const sortByMonth = (posts: any) => {
+const sortByMonth = (posts: Post[]): Post[][] => {
   const sorted = [];
   for (const post of posts) {
     const month = (new Date(Number(post.createdAt))).getMonth();
@@ -52,7 +36,7 @@ function App() {
         <PostFrequency posts={sortByMonth(data.allPosts)} />
         
         
-        {data.allPosts.map(({ id, title, author, likelyTopics }: any) => (
+        {data.allPosts.map(({ id, title }: Post) => (
           <div key={id}>
             <h3>{title}</h3>
           </div>

@@ -5,23 +5,22 @@ import { GradientPurpleRed } from '@visx/gradient';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleBand, scaleLinear } from '@visx/scale';
 
-const verticalMargin = 120;
-
-const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+import type {Post} from '../types';
+import {margin, monthNames} from './graphConstants'
 
 // accessors
-const getPostsInMonth = (month: any) => month.length;
+const getPostsInMonth = (month: Post[]) => month.length;
 
 export type Props = {
-  posts: any;
+  posts: Post[][];
   width?: number;
   height?: number
 };
 
 export const PostFrequency = ({ width = 700, height = 500, posts }: Props) => {
   // bounds
-  const xMax = width;
-  const yMax = height - verticalMargin;
+  const xMax = width - margin.x;
+  const yMax = height - margin.y;
 
   // scales, memoize for performance
   const xScale = useMemo(
@@ -54,8 +53,8 @@ export const PostFrequency = ({ width = 700, height = 500, posts }: Props) => {
     <svg width={width} height={height}>
       <GradientPurpleRed id="teal" />
       <rect width={width} height={height} fill="url(#teal)" rx={14} />
-      <Group top={verticalMargin / 2}>
-        {posts.map((d: any, index: number) => {
+      <Group left={margin.x / 2} top={margin.y / 2}>
+        {posts.map((d: Post[], index: number) => {
           const month = index;
           const barWidth = xScale.bandwidth();
           const barHeight = yMax - (yScale(getPostsInMonth(d)) ?? 0);
@@ -75,8 +74,8 @@ export const PostFrequency = ({ width = 700, height = 500, posts }: Props) => {
       </Group>
 
       <AxisLeft
-        top={verticalMargin/2}
-        left={20}
+        top={margin.y/2}
+        left={margin.x/2}
         scale={yScale}
         stroke='#e5fd3d'
         hideTicks
@@ -89,7 +88,8 @@ export const PostFrequency = ({ width = 700, height = 500, posts }: Props) => {
       />
 
       <AxisBottom
-        top={yMax + verticalMargin/2}
+        top={yMax + margin.y/2}
+        left={margin.x/2}
         scale={dateScale}
         stroke='#e5fd3d'
         hideAxisLine

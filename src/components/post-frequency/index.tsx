@@ -5,8 +5,8 @@ import { GradientPurpleRed } from '@visx/gradient';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleBand, scaleLinear } from '@visx/scale';
 
-import type {Post} from '../types';
-import {margin, monthNames} from './graphConstants'
+import type {Post} from '../../types';
+import {margin, monthNames, labelProps} from '../graphConstants'
 
 // accessors
 const getPostsInMonth = (month: Post[]) => month.length;
@@ -80,11 +80,9 @@ export const PostFrequency = ({ width = 700, height = 500, posts }: Props) => {
         stroke='#e5fd3d'
         hideTicks
         label='# of posts'
-        tickLabelProps={() => ({
-          fill: '#e5fd3d',
-          fontSize: 11,
-          textAnchor: 'middle',
-        })}
+        labelOffset={20}
+        labelProps={labelProps}
+        tickLabelProps={() => labelProps}
       />
 
       <AxisBottom
@@ -94,11 +92,7 @@ export const PostFrequency = ({ width = 700, height = 500, posts }: Props) => {
         stroke='#e5fd3d'
         hideAxisLine
         hideTicks
-        tickLabelProps={() => ({
-          fill: '#e5fd3d',
-          fontSize: 15,
-          textAnchor: 'middle',
-        })}
+        tickLabelProps={() => labelProps}
       />
     </svg>
   );

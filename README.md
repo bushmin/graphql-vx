@@ -4,7 +4,11 @@ React app testing graphql queries and data visualisation with VX
 ## How to run project
 ### `npm i`
 ### `npm start`
+<br/>
 
+
+Or build "for production"! Static server needed.
+### `npm run-script build`
 <br/>
 
 # Process
@@ -24,8 +28,10 @@ I created an app with react-create-app, added typescript and ESlint. Then instal
 Then I installed the VX package and dived deeper in components and API. To tell you the truth, this was the place I've lost the most time on. It was easy enough to get the needed data in *my* structures in code. But to display all the charts with my data, accurately and how I wanted took lots of fine tuning by trial and errors.
 
 In the end, I didn't have enough time to create all the visualisations I had in mind, so after 6 hours of coding in total I decided to stop with 3 charts which you can see in my project.
+- You can refresh the browser for new data!
+- Adjust constants DEFAULT_POST_AMOUNT and DEFAULT_LIKELIHOOD in 'src/App.tsx' for extra fun!
 
-Lack of time also resulted in small time left for styling (almost no styles written and desktop-only for now) and for throughout code cleanup (separating logic and visualisation parts of components, reuse of tooltips, new directive for containers, etc.).
+Lack of time also resulted in small time left for styling (almost no styles written, no styles for loading or error states, desktop-only for now) and for throughout code cleanup (separating logic and visualisation parts of components, reuse of tooltips, new directive for containers, etc.).
 
 # Afterthoughts
 As I have learned while messing with fakerQL, it generates random data, so there is no way of filtering or sorting data. So I had to get a small amount of posts and filter this data by hand.

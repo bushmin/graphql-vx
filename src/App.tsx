@@ -8,6 +8,7 @@ import {TopTopics} from './components/popular-topics';
 import {TopicLinks} from './components/topic-links';
 import type {Post, SortedData} from './types';
 
+const DEFAULT_POST_AMOUNT = 1000;
 const DEFAULT_LIKELIHOOD = 0.17;
 
 const groupByMonthsAndTopics = (posts: Post[], minLikelihood = DEFAULT_LIKELIHOOD) => {
@@ -20,13 +21,14 @@ const groupByMonthsAndTopics = (posts: Post[], minLikelihood = DEFAULT_LIKELIHOO
   } as SortedData;
 
   for (const post of posts) {
+
+    //group by month
     const month = (new Date(Number(post.createdAt))).getMonth();
-
-
     let monthPosts = sorted.months[month]?.posts;
     monthPosts ? monthPosts.push(post) : monthPosts = [post];
     sorted.months[month] || (sorted.months[month] = {monthId: month, posts: [], topics: {}});
 
+    //group by topic
     for (const topic of post.likelyTopics) {
       if (topic.likelihood > minLikelihood) {
         let topicPosts = sorted.topics[topic.label];
@@ -39,15 +41,13 @@ const groupByMonthsAndTopics = (posts: Post[], minLikelihood = DEFAULT_LIKELIHOO
 
   }
 
-  console.log(sorted);
-
   return sorted;
 }
 
 
 
 function App() {
-  const { loading, error, data } = useQuery(GET_POSTS, {variables: { amount: 1000 }});
+  const { loading, error, data } = useQuery(GET_POSTS, {variables: { amount: DEFAULT_POST_AMOUNT }});
 
   const sortedData = useMemo(() => groupByMonthsAndTopics(data?.allPosts), [data])
 

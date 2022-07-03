@@ -14,23 +14,25 @@ export type Post = {
     title: string;
     createdAt: string;
     author: Author;
-    likelyTopics: Topic[]
+    likelyTopics: Topic[];
 }
 
 export type AuthorCollection = Record<string, {
     posts: Post[];
-    author: Author
+    author: Author;
   }>
 
+export type TopicCollection = Record<string, Post[]>;
+
 export type Month = {
-    monthId: number,
+    monthId: number;
     posts: Post[];
     topics: Record<string, Post[]>;
   };
 
 
 export type SortedData = {
-    months: Month[],
-    authors: AuthorCollection,
-    topics: Record<string, Post[]>
+    months: Month[];
+    authors: AuthorCollection;
+    topics: TopicCollection;
   };

@@ -1,4 +1,5 @@
 export const margin = {x: 120, y: 120};
+export const heatmapMargin = {x: 220, y: 120};
 
 export const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -6,6 +7,18 @@ export const labelProps = {
     fill: '#e5fd3d',
     fontSize: 11,
     textAnchor: 'middle',
+  } as const;
+
+  export const topicLabelProps = {
+    fill: '#e5fd3d',
+    fontSize: 11,
+    textAnchor: 'middle',
+  } as const;
+
+  export const verticalTopicLabelProps = {
+    fill: '#e5fd3d',
+    fontSize: 11,
+    textAnchor: 'end',
   } as const;
 
  export const colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 

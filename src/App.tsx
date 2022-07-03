@@ -4,10 +4,13 @@ import { useQuery } from '@apollo/client';
 
 import {GET_POSTS} from './graphql/queries';
 import {PostFrequency} from './components/post-frequency';
-import {TopTopics} from './components/topics';
+import {TopTopics} from './components/popular-topics';
+import {TopicLinks} from './components/topic-links';
 import type {Post, SortedData} from './types';
 
-const megaSort = (posts: Post[], minLikelihood = 0.2) => {
+const DEFAULT_LIKELIHOOD = 0.2;
+
+const megaSort = (posts: Post[], minLikelihood = DEFAULT_LIKELIHOOD) => {
 
   if (!posts) return;
 
@@ -71,11 +74,17 @@ function App() {
       
       <br /><br />
 
-      <p>Most popular topics by month (likelihood &gt; 0.2)</p>
+      <p>Most popular topics by month (likelihood &gt; {DEFAULT_LIKELIHOOD})</p>
       <TopTopics
       topics={sortedData.topics}
       monthPosts={sortedData.months}
        />
+
+      <p>Topic connections</p>
+      <TopicLinks
+        topics={sortedData.topics}
+        minLikelihood={DEFAULT_LIKELIHOOD}
+      />
     </div>
   );
 }

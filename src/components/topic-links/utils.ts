@@ -1,6 +1,6 @@
 import type {TopicCollection} from '../../types';
 
-// Convert topic object to suitable for heatmap
+// Convert topic object to suitable object for heatmap
 // While counting frequency of posts with both topics over minLikelihood
 export const countTopicLinks = (topics: TopicCollection, minLikelihood: number) => {
     const topicNames = Object.keys(topics);

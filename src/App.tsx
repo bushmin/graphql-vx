@@ -9,7 +9,7 @@ import {TopicLinks} from './components/topic-links';
 import type {Post, SortedData} from './types';
 
 const DEFAULT_POST_AMOUNT = 1000;
-const DEFAULT_LIKELIHOOD = 0.17;
+const DEFAULT_LIKELIHOOD = 0.17; //heuristic parameter, "strong enough topic"
 
 const groupByMonthsAndTopics = (posts: Post[], minLikelihood = DEFAULT_LIKELIHOOD) => {
 

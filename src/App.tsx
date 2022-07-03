@@ -8,15 +8,14 @@ import {TopTopics} from './components/popular-topics';
 import {TopicLinks} from './components/topic-links';
 import type {Post, SortedData} from './types';
 
-const DEFAULT_LIKELIHOOD = 0.2;
+const DEFAULT_LIKELIHOOD = 0.17;
 
-const megaSort = (posts: Post[], minLikelihood = DEFAULT_LIKELIHOOD) => {
+const groupByMonthsAndTopics = (posts: Post[], minLikelihood = DEFAULT_LIKELIHOOD) => {
 
   if (!posts) return;
 
   const sorted = {
     months: [],
-    authors: {},
     topics: {}
   } as SortedData;
 
@@ -38,14 +37,6 @@ const megaSort = (posts: Post[], minLikelihood = DEFAULT_LIKELIHOOD) => {
       }
     }
 
-    const authorId = post.author.id;
-    if (sorted.authors[authorId]) sorted.authors[authorId].posts.push(post);
-    else {
-      sorted.authors[authorId] = {
-        author: post.author,
-        posts: [post]
-      }
-    }
   }
 
   console.log(sorted);
@@ -58,7 +49,7 @@ const megaSort = (posts: Post[], minLikelihood = DEFAULT_LIKELIHOOD) => {
 function App() {
   const { loading, error, data } = useQuery(GET_POSTS, {variables: { amount: 1000 }});
 
-  const sortedData = useMemo(() => megaSort(data?.allPosts), [data])
+  const sortedData = useMemo(() => groupByMonthsAndTopics(data?.allPosts), [data])
 
 
   if (loading) return <p>Loading...</p>;
@@ -80,7 +71,7 @@ function App() {
       monthPosts={sortedData.months}
        />
 
-      <p>Topic connections</p>
+      <p>Topics correlation</p>
       <TopicLinks
         topics={sortedData.topics}
         minLikelihood={DEFAULT_LIKELIHOOD}

@@ -17,10 +17,6 @@ export type Post = {
     likelyTopics: Topic[];
 }
 
-export type AuthorCollection = Record<string, {
-    posts: Post[];
-    author: Author;
-  }>
 
 export type TopicCollection = Record<string, Post[]>;
 
@@ -33,6 +29,5 @@ export type Month = {
 
 export type SortedData = {
     months: Month[];
-    authors: AuthorCollection;
     topics: TopicCollection;
   };

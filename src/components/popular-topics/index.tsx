@@ -177,8 +177,6 @@ export const TopTopics = ({ width = 1000, height = 500, topics, monthPosts }: Pr
           {' '}
              ({Math.round(100*topicPart(tooltipData.bar.data,tooltipData.key))}%)          
           </div>
-          <div>
-          </div>
         </TooltipInPortal>
       )}
     </div>
